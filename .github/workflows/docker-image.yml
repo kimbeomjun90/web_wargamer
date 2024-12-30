@@ -28,3 +28,9 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/wargame:latest
+      - name: Trigger Jenkins Webhook (on Success)
+        if: ${{ success() }} # 빌드가 성공한 경우에만 실행
+        run: |
+          curl -X POST -H "Content-Type: application/json" \
+          -d '{"status":"success"}' \
+          https://9208-221-164-194-12.ngrok-free.app/github-webhook/
